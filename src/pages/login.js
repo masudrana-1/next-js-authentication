@@ -3,10 +3,21 @@ import { GoogleOutlined, GithubOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import styles from "@/styles/Login.module.css";
 import { signIn } from "next-auth/react";
+import { useForm } from "react-hook-form";
 
 
 
 const LoginPage = () => {
+
+
+  // react hook form 
+  const {
+    register,
+    handleSubmit
+  } = useForm()
+
+  const onSubmit = (data) => console.log(data)
+
   return (
     <div>
       <Head>
@@ -25,12 +36,14 @@ const LoginPage = () => {
           })}/>
         </div>
         <hr />
-        <form>
+
+        {/* react hook form  */}
+        <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="">Your Email</label>
-          <input type="email" />
+          <input type="email" {...register("email", { required: true })}/>
           <label htmlFor="">Your Password</label>
-          <input type="password" />
-          <Button>Login</Button>
+          <input type="password" {...register("password", { required: true })}/>
+          <button type="submit">Login</button>
         </form>
       </div>
     </div>
