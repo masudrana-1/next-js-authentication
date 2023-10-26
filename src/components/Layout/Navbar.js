@@ -2,11 +2,19 @@ import { Layout, Menu, Button } from "antd";
 const { Header } = Layout;
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react"
+import React from "react";
+import auth from "@/firebase/firebase.auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Navbar = () => {
 
   // next auth 
   const { data: session } = useSession()
+
+  // firebase hooks 
+  const [user, loading, error] = useAuthState(auth);
+
+  console.log("from navbar", user)
 
   return (
     <Header
@@ -43,17 +51,21 @@ const Navbar = () => {
         >
           <items>Profile</items>
         </Link>
+
+        
+
+
         {
-          session?.user?
-          <items>
+          (session?.user || user?.email) ?
+          (<items>
           <Button onClick={()=> signOut()} type="primary" danger>
             Logout
           </Button>
-        </items>
+        </items>)
         :
-        <Link style={{ textDecoration: "none", color: "white" }} href="/login">
+        (<Link style={{ textDecoration: "none", color: "white" }} href="/login">
           <items>Login</items>
-        </Link>
+        </Link>)
         }
       </Menu>
     </Header>
