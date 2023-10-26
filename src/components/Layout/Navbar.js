@@ -56,7 +56,7 @@ const Navbar = () => {
 
 
         {
-          (session?.user || user?.email) ?
+          (session?.user) ?
           (<items>
           <Button onClick={()=> signOut()} type="primary" danger>
             Logout
